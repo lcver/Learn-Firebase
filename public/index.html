@@ -41,7 +41,7 @@
 
   var db = firebase.database();
 
-  var playerRef = db.ref('scorer');
+  var playerRef = db.ref('player');
 
   /**
     Param
@@ -65,7 +65,32 @@
   playerRef.orderByValue().equalTo(3).on('value', showData, showError);
 
 
+  // playerRef.on('child_added', addData);
+  playerRef.on('child_removed', removeData);
 
+  /** Tambah data
+  * set : digunakan untuk mereplace data
+  * 
+  * push : save data with generate random id
+  *
+  * update : create data if not exist 
+  */
+  // playerRef.update({
+  //   "-MFVNd2zYdgsfPNm-Bdj/nama" : "Drogba"
+  // })
+
+  playerRef.child(2).remove();
+
+
+  function removeData()
+  {
+    console.log('Data berhasil dihapus!');
+  }
+
+  // function addData()
+  // {
+  //   console.log('Data berhasil ditambah!');
+  // }
 
 
   function showData(items)
