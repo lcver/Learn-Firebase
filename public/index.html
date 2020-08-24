@@ -10,6 +10,66 @@
 
   <h1>menguasai dunia dengan nodejs</h1>
   <p>Oke coy</p>
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+      https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-analytics.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-database.js"></script>
+
+  <script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBphHIRtndNoEd82K0AmFrIMxL9uWyzEyY",
+    authDomain: "test1-eb872.firebaseapp.com",
+    databaseURL: "https://test1-eb872.firebaseio.com",
+    projectId: "test1-eb872",
+    storageBucket: "test1-eb872.appspot.com",
+    messagingSenderId: "360363435928",
+    appId: "1:360363435928:web:3546cbbbf75263ffa02ded",
+    measurementId: "G-4P17ERDM27"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+
+  var db = firebase.database();
+
+  var playerRef = db.ref('player');
+
+  /**
+    Param
+    1. Jenis
+    2. callback true
+    3. callback false
+  */
+  playerRef.on('value', showData, showError);
+
+  // bisa digunakan sebagai feedback action
+  // playerRef.on('child_added', userAdded)
+
+  playerRef.on('child_changed', userChanged)
+
+
+  function userChanged(items)
+  {
+    console.log('Berhasil update player '+items.val().nama);
+  }
+
+  function showData(items)
+  {
+    // console.log(items.val())
+  }
+
+  function showError(err)
+  {
+    console.log(err)
+  }
+
+  </script>
   
 </body>
 </html>
