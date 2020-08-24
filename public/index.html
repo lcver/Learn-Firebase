@@ -9,7 +9,10 @@
 <body>
 
   <h1>menguasai dunia dengan nodejs</h1>
-  <p>Oke coy</p>
+  
+  <ul>
+
+  </ul>
 
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-app.js"></script>
@@ -38,7 +41,7 @@
 
   var db = firebase.database();
 
-  var playerRef = db.ref('player');
+  var playerRef = db.ref('scorer');
 
   /**
     Param
@@ -46,22 +49,38 @@
     2. callback true
     3. callback false
   */
-  playerRef.on('value', showData, showError);
+  // playerRef.on('value', showData, showError);
 
   // bisa digunakan sebagai feedback action
   // playerRef.on('child_added', userAdded)
 
-  playerRef.on('child_changed', userChanged)
+  
+  // filter and short
+  // orderBy() orderByChild() orderByValue()
+  // ref.fungsiOrder.fungsiQuery
+  // startAt() endAt() equalTo() limitToFirst() limitToLast()
+
+  // playerRef.orderByChild('nama').on('value', showData, showError);
+
+  playerRef.orderByValue().equalTo(3).on('value', showData, showError);
 
 
-  function userChanged(items)
-  {
-    console.log('Berhasil update player '+items.val().nama);
-  }
+
+
 
   function showData(items)
   {
-    // console.log(items.val())
+    var _ul = document.getElementsByTagName('ul')[0];
+
+    var _content = '';
+
+    items.forEach(function(child) {
+
+      _content += "<li>" + child.key + " - " + child.val() + "</li>";
+
+    });
+
+    _ul.innerHTML = _content;
   }
 
   function showError(err)
