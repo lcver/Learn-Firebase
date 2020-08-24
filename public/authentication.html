@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login menggunakan authentication di firebase</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        body {
+            margin: 20px;
+        }
+
+        .hidden{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Sistem loginisasi</h1>
+
+    <div class="box">
+        <input type="email" id="email_form">
+        <br>
+        <input type="password" id="password_form">
+        <br>
+        <button id="signUp" >Register</button>
+        <button id="login">Login</button>
+        <button id="logout" class="hidden">Logout</button>
+
+    </div>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+      https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase.js"></script>
+
+  <script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBphHIRtndNoEd82K0AmFrIMxL9uWyzEyY",
+    authDomain: "test1-eb872.firebaseapp.com",
+    databaseURL: "https://test1-eb872.firebaseio.com",
+    projectId: "test1-eb872",
+    storageBucket: "test1-eb872.appspot.com",
+    messagingSenderId: "360363435928",
+    appId: "1:360363435928:web:3546cbbbf75263ffa02ded",
+    measurementId: "G-4P17ERDM27"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+
+  var auth = firebase.auth();
+
+  // elements
+  var email_form = document.getElementById('email_form');
+  var password_form = document.getElementById('password_form');
+  var login_btn = document.getElementById('login');
+  var signUp_btn = document.getElementById('signUp');
+  var logout_btn = document.getElementById('logout');
+
+  // event listener
+
+  login_btn.addEventListener('click', handleLogin);
+  signUp_btn.addEventListener('click', handleSignup);
+  logout_btn.addEventListener('click', handleLogout);
+
+  function handleSignup()
+  {
+    auth.createUserWithEmailAndPassword(email_form.value, password_form.value)
+        .then(function(data) {
+            console.log('-- Terdaftar --');
+            console.log(data);
+        })
+        .catch(function(err) {
+            console.log(err);
+        })
+  }
+
+  function handleLogin()
+  {
+    auth.signInWithEmailAndPassword(email_form.value, password_form.value)
+        .then(function(data) {
+            console.log('-- login --');
+            console.log(data);
+        })
+        .catch(function(err) {
+            console.log(err);
+        })
+  }
+
+  function handleLogout()
+  {
+      auth.signOut().then(function() {
+        console.log('-- berhasil signout --');
+      }).catch(function(err) {
+          console.log(err);
+      })
+  }
+
+
+// Automatis event auth state
+    auth.onAuthStateChanged(function(user) {
+        if(user){ // login
+
+            logout_btn.classList.remove('hidden');
+            login_btn.classList.add('hidden');
+            signUp_btn.classList.add('hidden');
+        } else {
+
+            console.log('user belum signin');
+            logout_btn.classList.add('hidden');
+            login_btn.classList.remove('hidden');
+            signUp_btn.classList.remove('hidden');
+        }
+    })
+
+  </script>
+    
+</body>
+</html>
