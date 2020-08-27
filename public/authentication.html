@@ -74,6 +74,14 @@
         .then(function(data) {
             console.log('-- Terdaftar --');
             console.log(data);
+
+
+            auth.currentUser.sendEmailVerification().then(function() {
+                console.log('email sent');
+            }).catch(function(err) {
+                console.log(err);
+            })
+
         })
         .catch(function(err) {
             console.log(err);
