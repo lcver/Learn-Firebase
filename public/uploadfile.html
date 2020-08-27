@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Upload File on firebase storage</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+
+        body{
+            padding: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Selamat Datang di Firebase Storage</h1>
+    <br>
+    <br>
+
+    <progress value="0" max="100" id="uploadProgress">0%</progress> <br>
+    <input type="file" value="upload" id="uploadButton">
+
+    <button type="button" id="downloadButton">download</button>
+
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase-storage.js"></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/7.19.0/firebase.js"></script> -->
+
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyBphHIRtndNoEd82K0AmFrIMxL9uWyzEyY",
+            authDomain: "test1-eb872.firebaseapp.com",
+            databaseURL: "https://test1-eb872.firebaseio.com",
+            projectId: "test1-eb872",
+            storageBucket: "test1-eb872.appspot.com",
+            messagingSenderId: "360363435928",
+            appId: "1:360363435928:web:3546cbbbf75263ffa02ded",
+            measurementId: "G-4P17ERDM27"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        var storage = firebase.storage();
+
+        var progress = document.getElementById('uploadProgress');
+        var button = document.getElementById('uploadButton');
+        var downloadButton = document.getElementById('downloadButton');
+
+        var imgRef = storage.ref('uploadFile/want-me-1366x768-hd-5503.jpg');
+
+        downloadButton.addEventListener('click', function() {
+            imgRef.getDownloadURL().then(function(url) {
+                console.log('Berhasil Download');
+                console.log(url);
+            })
+        })
+
+        button.addEventListener('change', function(e) {
+            // get file
+
+            var file = e.target.files[0];
+            var storageRef = storage.ref('uploadFile/' + file.name);
+
+            var uploadTask = storageRef.put(file);
+
+            uploadTask.on('state_changed', loadUpload, errUpload, completeUpload);
+
+            function loadUpload(data)
+            {
+                var percent = (data.bytesTransferred/data.totalBytes) * 100;
+
+                progress.value = percent;
+            }
+
+            function errUpload(err)
+            {
+                console.log('-- error --');
+
+                console.log(err);
+            }
+
+            function completeUpload(data)
+            {
+                console.log('-- success --');
+                console.log(data);
+            }
+        })
+    </script>
+    
+</body>
+</html>
